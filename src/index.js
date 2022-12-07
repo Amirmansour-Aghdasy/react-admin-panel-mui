@@ -1,16 +1,42 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App";
+
+import { createTheme, ThemeProvider } from "@mui/material";
+import rtlPlugin from "stylis-plugin-rtl";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import { prefixer } from "stylis";
+import { HelmetProvider } from "react-helmet-async";
+
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import reportWebVitals from "./reportWebVitals";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
+
+//* Create Rtl Cache
+const cacheRtl = createCache({
+  key: "muirtl",
+  stylisPlugins: [prefixer, rtlPlugin],
+});
+
+//* MUI Custom Theme
+const theme = createTheme({
+  direction: "rtl",
+  typography: {
+    fontFamily: "iransansfanum",
+  },
+});
 
 const root = createRoot(document.getElementById("root"));
 root.render(
   <StrictMode>
-    <App />
+    <CacheProvider value={cacheRtl}>
+      <ThemeProvider theme={theme}>
+        <HelmetProvider>
+          <RouterProvider router={router} />
+        </HelmetProvider>
+      </ThemeProvider>
+    </CacheProvider>
   </StrictMode>
 );
 
 serviceWorkerRegistration.unregister();
-
-reportWebVitals();
