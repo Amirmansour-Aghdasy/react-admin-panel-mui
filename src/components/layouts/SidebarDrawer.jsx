@@ -13,7 +13,7 @@ import { ChevronRight } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 
-import { SidebarListItems } from "../../mocks";
+import { SidebarListItems } from "../../__mocks__";
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -97,6 +97,10 @@ const SidebarDrawer = ({ open, theme, setOpen }) => {
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText
+                  primaryTypographyProps={{
+                    fontSize: 13.5,
+                    color: "#000000de",
+                  }}
                   primary={item.text}
                   sx={{ opacity: open ? 1 : 0 }}
                 />

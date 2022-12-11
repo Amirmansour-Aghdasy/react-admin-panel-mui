@@ -55,7 +55,7 @@ const DashboardLayout = ({ children }) => {
             <Menu />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            پنل مدیریت فروشگاه
           </Typography>
         </Toolbar>
       </AppBar>
@@ -65,8 +65,8 @@ const DashboardLayout = ({ children }) => {
         width="100%"
         sx={{ height: "100vh" - 8.5 }}
         flexGrow={1}
-        mt={8.5}
-        px={1}
+        mt={8}
+        p={{ xs: 1.5, sm: 2 }}
       >
         {children}
         <Outlet />
