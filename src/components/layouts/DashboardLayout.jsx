@@ -3,10 +3,11 @@ import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   Box,
-  AppBar as MuiAppBar,
   Toolbar,
+  Container,
   Typography,
   IconButton,
+  AppBar as MuiAppBar,
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import { Outlet } from "react-router-dom";
@@ -66,9 +67,9 @@ const DashboardLayout = ({ children }) => {
         sx={{ height: "100vh" - 8.5 }}
         flexGrow={1}
         mt={8}
-        p={{ xs: 1.5, sm: 2 }}
+        pt={1.5}
       >
-        {children}
+        <Container maxWidth="xl">{children}</Container>
         <Outlet />
       </Box>
     </Box>

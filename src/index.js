@@ -11,6 +11,7 @@ import { HelmetProvider } from "react-helmet-async";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
+import { UsersProvider } from "./contexts/users/UsersContext";
 
 //* Create Rtl Cache
 const cacheRtl = createCache({
@@ -32,7 +33,9 @@ root.render(
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
         <HelmetProvider>
-          <RouterProvider router={router} />
+          <UsersProvider>
+            <RouterProvider router={router} />
+          </UsersProvider>
         </HelmetProvider>
       </ThemeProvider>
     </CacheProvider>

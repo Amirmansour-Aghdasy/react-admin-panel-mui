@@ -1,110 +1,66 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
 import {
   Box,
   Grid,
   Card,
-  Avatar,
-  Badge,
+  Button,
   CardHeader,
-  IconButton,
-  CardContent,
-  Collapse,
-  Typography,
+  ButtonGroup,
 } from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
-import { styled } from "@mui/material/styles";
+import {
+  AddCircleOutlineOutlined,
+  DeleteOutlineOutlined,
+  ModeEditOutlineOutlined,
+} from "@mui/icons-material";
 
-import { DashboardLayout } from "../components";
-
-const ExpandMoreParent = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}));
+import { DashboardLayout, User } from "../components";
+import {
+  useUsersState,
+  useUsersDispatch,
+} from "../contexts/users/UsersContext";
+import { ActionTypes } from "./../contexts/users/reducer";
+import { handleLoadUsers } from "./../services/api";
 
 const Users = () => {
-  const [expanded, setExpanded] = useState(false);
+  const { users } = useUsersState();
+  const dispatch = useUsersDispatch();
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch({
+        type: ActionTypes.LOAD_USERS,
+        payload: await handleLoadUsers({ params: { _page: 1, _limit: 20 } }),
+      });
+      console.log(users);
+    };
+    fetchData();
+  }, []);
 
   return (
     <DashboardLayout>
       <Box>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card sx={{ width: "100%", height: "100%" }}>
-              <CardHeader
-                avatar={
-                  <StyledBadge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                    variant="dot"
-                  >
-                    <Avatar
-                      alt=""
-                      src={require("../assets/images/personal.jpg")}
-                      sx={{ width: 50, height: 50 }}
-                    />
-                  </StyledBadge>
-                }
-                action={
-                  <ExpandMoreParent
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                  >
-                    <ExpandMore />
-                  </ExpandMoreParent>
-                }
-                sx={{ p: 2 }}
-                title="امیرمنصور اقدسی"
-                subheader="Full-stack Developer"
-              />
-              <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent sx={{p: 2}}>
-                  
-                </CardContent>
-              </Collapse>
-            </Card>
-          </Grid>
+        <Card display="flex" justifycontent="space-between" alignitems="center">
+          <CardHeader
+            action={
+              <ButtonGroup variant="outlined" sx={{ mt: 1.5 }}>
+                <Button color="success" onClick={() => {}}>
+                  <AddCircleOutlineOutlined />
+                </Button>
+                <Button color="error" onClick={() => {}}>
+                  <DeleteOutlineOutlined />
+                </Button>
+                <Button color="warning" onClick={() => {}}>
+                  <ModeEditOutlineOutlined />
+                </Button>
+              </ButtonGroup>
+            }
+            title="بخش کاربران"
+            subheader="مشاهده و مدیریت تعداد کل کاربران عادی و ویژه"
+          />
+        </Card>
+        <Grid container spacing={1} mt={1}>
+          {users ? users.map((user) => <User user={user} />) : "LOADING..."}
         </Grid>
       </Box>
     </DashboardLayout>
